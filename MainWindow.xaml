@@ -1,0 +1,59 @@
+﻿<Window x:Class="NumberConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NumberConverter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Black" BorderThickness="2,2,2,0" >
+            <TextBlock Grid.Row="0" Text="Преобразование чисел" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Rubik"  Margin="70,10,70,10"></TextBlock>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Grid.RowSpan="3" BorderThickness="2" BorderBrush="Black"/>
+            <Border Grid.Column="1" Grid.RowSpan="3" BorderThickness="2" BorderBrush="Black"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходная система исчисления" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="18"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Конечная система исчисления" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="18"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ElementName=SourceSystemSlider, Path=Value}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Medium"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=FiniteSystemSlider, Path=Value}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Medium"/>
+            <Slider x:Name="SourceSystemSlider" Grid.Row="2" Grid.Column="0" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
+            <Slider x:Name="FiniteSystemSlider" Grid.Row="2" Grid.Column="1" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
+        </Grid>
+        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="2,0,2,2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Конечное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
+                <TextBox Grid.Row="1" Grid.Column="0" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2"/>
+                <TextBox Grid.Row="1" Grid.Column="2" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2" IsEnabled="False"/>
+                <Button Grid.Row="0" Grid.Column="1" Margin="15,10,15,4" Background="LightBlue" BorderThickness="1">
+                    <TextBlock Text="Преобразовать" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="14" FontStyle="Italic"/>
+                </Button>
+                <Path Grid.Row="1" Grid.Column="1" Fill="Black" Data="M 0 4 L 40 4 L 40 0 L 50 5 L 40 10 L 40 6 L 0 6 Z" Stretch="Uniform"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
