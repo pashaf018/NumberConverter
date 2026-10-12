@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NumberConverter" xmlns:x1="clr-namespace:System;assembly=mscorlib" xmlns:x2="http://schemas.microsoft.com/winfx/2009/xaml"
-		xmlns:sys="clr-namespace:System;assembly=mscorlib"
-		mc:Ignorable="d"
+		xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:viewmodel="clr-namespace:NumberConverter.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+        mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -32,8 +32,8 @@
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Конечная система исчисления" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="18"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ElementName=SourceSystemSlider, Path=Value}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Medium"/>
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=FiniteSystemSlider, Path=Value}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Medium"/>
-            <Slider x:Name="SourceSystemSlider" Grid.Row="2" Grid.Column="0" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
-            <Slider x:Name="FiniteSystemSlider" Grid.Row="2" Grid.Column="1" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
+            <Slider x:Name="SourceSystemSlider" Value="{Binding SourceSystemValue, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
+            <Slider x:Name="FiniteSystemSlider" Value="{Binding FiniteSystemValue, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Minimum="2" Maximum="16" VerticalAlignment="Center" Margin="40,0,40,0" Background="LightGray" TickFrequency="1" IsSnapToTickEnabled="True"/>
         </Grid>
         <Border Grid.Row="2" BorderBrush="Black" BorderThickness="2,0,2,2">
             <Grid>
@@ -48,16 +48,9 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Конечное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
-                <TextBox  x:Name="startNumber"  Grid.Row="1" Grid.Column="0" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2"/>
+                <TextBox  x:Name="startNumber" Text="{Binding StartNumberText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2"/>
                 <TextBox Text="{Binding TargetText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2" IsEnabled="False"/>
                 <Button Grid.Row="0" Grid.Column="1" Margin="15,10,15,4" Background="LightBlue" BorderThickness="1" Command="{Binding ButtonTransform}">
-					<Button.CommandParameter>
-						<x:Array Type="{x:Type sys:Object}">
-							<Binding ElementName="SourceSystemSlider" Path="Value"></Binding>
-							<Binding ElementName="FiniteSystemSlider" Path="Value"></Binding>
-							<Binding ElementName="startNumber" Path="Text"></Binding>
-						</x:Array>
-					</Button.CommandParameter>
                     <TextBlock Text="Преобразовать" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="14" FontStyle="Italic"/>
                 </Button>
                 <Path Grid.Row="1" Grid.Column="1" Fill="Black" Data="M 0 4 L 40 4 L 40 0 L 50 5 L 40 10 L 40 6 L 0 6 Z" Stretch="Uniform"/>

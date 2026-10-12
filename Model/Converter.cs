@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace NumberConverter
 {
@@ -42,7 +43,12 @@ namespace NumberConverter
 
 			if (startNumber[0] == '-' || startNumber[0] == '+')
 			{
-				startNumber.Remove(0, 1);
+				startNumber = startNumber.Remove(0, 1);
+			}
+
+			if (startSystem == 10 && int.TryParse(startNumber,out numberToReturn))
+			{
+				return numberToReturn * (negative ? -1 : 1);
 			}
 
 			foreach (char c in startNumber)
@@ -57,7 +63,8 @@ namespace NumberConverter
 					throw new ArgumentException($"Система счисления: \"{startSystem}\" не содержит \"{c}\"");
 				}
 
-				numberToReturn += charBase.IndexOf(c) * startSystem ^ i;
+				numberToReturn += charBase.IndexOf(c) * (int)Math.Pow(startSystem,i);
+				i--;
 			}
 
 			return numberToReturn * (negative ? -1 : 1);
@@ -76,7 +83,7 @@ namespace NumberConverter
 
 			while (TenNumber != 0)
 			{
-				result += TenNumber % endSystem;
+				result += charBase[TenNumber % endSystem];
 				TenNumber /= endSystem;
 			}
 
@@ -93,7 +100,12 @@ namespace NumberConverter
 
 			if (endSystem == 2)
 			{
-				int diff = (int)RoundUpToPowerOf2((uint)reversed.Length) - reversed.Length;
+				int closest = (int)RoundUpToPowerOf2((uint)(reversed.Length));
+				if (closest < 4)
+				{
+					closest = 4;
+				}
+				int diff = closest - reversed.Length;
 				string add = (negative ? "1" : "0") + new string('0', diff - 1);
 				toReturn += " ПК " + add + reversed;
 			}
@@ -104,7 +116,6 @@ namespace NumberConverter
 		private static uint RoundUpToPowerOf2(uint value)
 		{
 			if (value == 0) return 1;
-			value--;
 			value |= value >> 1;
 			value |= value >> 2;
 			value |= value >> 4;

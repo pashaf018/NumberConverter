@@ -11,27 +11,19 @@ namespace NumberConverter.ViewModel
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private string _text;
 		private string _targetText;
+
+		public double SourceSystemValue { get; set; }
+		public double FiniteSystemValue { get; set; }
+		public string StartNumberText { get; set; }
 
 		public ICommand ButtonTransform { get; }
 
 		public MainViewModel()
 		{
 			ButtonTransform = new RelayCommand(TransformNumber);
-		}
-
-		public string Text
-		{
-			get => _text;
-			set
-			{
-				if (_text != value)
-				{
-					_text = value;
-					OnPropertyChanged();
-				}
-			}
+			SourceSystemValue = 2;
+			FiniteSystemValue = 2;
 		}
 
 		public string TargetText
@@ -41,7 +33,7 @@ namespace NumberConverter.ViewModel
 			{
 				if (_targetText != value)
 				{
-					_text += value;
+					_targetText = value;
 					OnPropertyChanged();
 				}
 			}
@@ -49,22 +41,18 @@ namespace NumberConverter.ViewModel
 
 		private void TransformNumber(object parameter)
 		{
+			double startSystem = SourceSystemValue;
+			double endSystem = FiniteSystemValue;
+			string startNumber = StartNumberText;
 
-			if (parameter is object[] parameters)
+			try
 			{
-				double startSystem = (double)parameters[0];
-				double endSystem = (double)parameters[1];
-				string startNumber = (string)parameters[2];
-
-				try
-				{
-					string result = NumberConverter.Converter.Calculate(startNumber, (int)startSystem, (int)endSystem);
-
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message);
-				}
+				string result = NumberConverter.Converter.Calculate(startNumber, (int)startSystem, (int)endSystem);
+				TargetText = result;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
 			}
 		}
 	}
