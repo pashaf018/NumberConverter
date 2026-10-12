@@ -49,7 +49,8 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Конечное число" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="16"/>
                 <TextBox  x:Name="startNumber" Text="{Binding StartNumberText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2"/>
-                <TextBox Text="{Binding TargetText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2" IsEnabled="False"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding TargetText, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Margin="40,10,40,10" VerticalAlignment="Center" TextBlock.TextAlignment="Center" BorderBrush="Black" BorderThickness="2" IsEnabled="False"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding PKText, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Visibility="{Binding PKVisibility, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" IsEnabled="False" BorderBrush="Black" BorderThickness="2" Margin="40,0,40,10" TextBlock.TextAlignment="Center"/>
                 <Button Grid.Row="0" Grid.Column="1" Margin="15,10,15,4" Background="LightBlue" BorderThickness="1" Command="{Binding ButtonTransform}">
                     <TextBlock Text="Преобразовать" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik" FontSize="14" FontStyle="Italic"/>
                 </Button>
