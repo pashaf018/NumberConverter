@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace NumberConverter
 {
@@ -37,6 +38,13 @@ namespace NumberConverter
 		{
 			int numberToReturn = 0;
 			int i = startNumber.Length - 1;
+			bool negative = startNumber[0] == '-';
+
+			if (startNumber[0] == '-' || startNumber[0] == '+')
+			{
+				startNumber.Remove(0, 1);
+			}
+
 			foreach (char c in startNumber)
 			{
 				if (!charBase.Contains(c))
@@ -52,12 +60,57 @@ namespace NumberConverter
 				numberToReturn += charBase.IndexOf(c) * startSystem ^ i;
 			}
 
-			return numberToReturn;
+			return numberToReturn * (negative ? -1 : 1);
 		}
 
 		private static string ConvertToOther(int TenNumber, int endSystem)
 		{
-			throw new NotImplementedException();
+			string result = "";
+			bool negative = false;
+			
+			if (TenNumber < 0)
+			{
+				TenNumber = Math.Abs(TenNumber);
+				negative = true;
+			}
+
+			while (TenNumber != 0)
+			{
+				result += TenNumber % endSystem;
+				TenNumber /= endSystem;
+			}
+
+			if (result.Length == 0)
+			{
+				return "0";
+			}
+
+			char[] arr = result.ToCharArray();
+			Array.Reverse(arr);
+			string reversed = new string(arr);
+
+			string toReturn = (negative ? "-" : "") + reversed;
+
+			if (endSystem == 2)
+			{
+				int diff = (int)RoundUpToPowerOf2((uint)reversed.Length) - reversed.Length;
+				string add = (negative ? "1" : "0") + new string('0', diff - 1);
+				toReturn += " ПК " + add + reversed;
+			}
+
+			return toReturn;
+		}
+
+		private static uint RoundUpToPowerOf2(uint value)
+		{
+			if (value == 0) return 1;
+			value--;
+			value |= value >> 1;
+			value |= value >> 2;
+			value |= value >> 4;
+			value |= value >> 8;
+			value |= value >> 16;
+			return value + 1;
 		}
 	}
 }
