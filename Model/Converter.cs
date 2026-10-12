@@ -12,7 +12,7 @@ namespace NumberConverter
 	{
 		private static string charBase = "0123456789ABCDEF";
 
-		public static string Calculate(string startNumber, int startSystem, int endSystem)
+		public static string CalculateForTextBlocks(string startNumber, int startSystem, int endSystem)
 		{
 			if (startSystem < 2 || startSystem > 16 || endSystem < 2 || endSystem > 16)
 			{
@@ -32,13 +32,16 @@ namespace NumberConverter
 
 			string result = ConvertToOther(TenNumber, endSystem);
 
+			if (endSystem == 2)
+			{
+				result += " ПК " + FillZeroes(result);
+			}
+
 			return result;
 		}
 
-		private static int ConvertToTen(string startNumber, int startSystem)
+		internal static int ConvertToTen(string startNumber, int startSystem)
 		{
-			int numberToReturn = 0;
-			int i = startNumber.Length - 1;
 			bool negative = startNumber[0] == '-';
 
 			if (startNumber[0] == '-' || startNumber[0] == '+')
@@ -46,31 +49,19 @@ namespace NumberConverter
 				startNumber = startNumber.Remove(0, 1);
 			}
 
+			int numberToReturn = 0;
+
 			if (startSystem == 10 && int.TryParse(startNumber,out numberToReturn))
 			{
 				return numberToReturn * (negative ? -1 : 1);
 			}
 
-			foreach (char c in startNumber)
-			{
-				if (!charBase.Contains(c))
-				{
-					throw new ArgumentException("Можно задать число только от 2 до 16 систем счисления");
-				}
-
-				if (charBase.IndexOf(c) > startSystem - 1)
-				{
-					throw new ArgumentException($"Система счисления: \"{startSystem}\" не содержит \"{c}\"");
-				}
-
-				numberToReturn += charBase.IndexOf(c) * (int)Math.Pow(startSystem,i);
-				i--;
-			}
+			numberToReturn = ConvertingLogic(startNumber, startSystem);
 
 			return numberToReturn * (negative ? -1 : 1);
 		}
 
-		private static string ConvertToOther(int TenNumber, int endSystem)
+		internal static string ConvertToOther(int TenNumber, int endSystem)
 		{
 			string result = "";
 			bool negative = false;
@@ -98,18 +89,6 @@ namespace NumberConverter
 
 			string toReturn = (negative ? "-" : "") + reversed;
 
-			if (endSystem == 2)
-			{
-				int closest = (int)RoundUpToPowerOf2((uint)(reversed.Length));
-				if (closest < 4)
-				{
-					closest = 4;
-				}
-				int diff = closest - reversed.Length;
-				string add = (negative ? "1" : "0") + new string('0', diff - 1);
-				toReturn += " ПК " + add + reversed;
-			}
-
 			return toReturn;
 		}
 
@@ -122,6 +101,47 @@ namespace NumberConverter
 			value |= value >> 8;
 			value |= value >> 16;
 			return value + 1;
+		}
+
+		private static int ConvertingLogic(string startNumber, int startSystem)
+		{
+			int i = startNumber.Length - 1;
+			int numberToReturn = 0;
+
+			foreach (char c in startNumber)
+			{
+				if (!charBase.Contains(c))
+				{
+					throw new ArgumentException("Можно задать число только от 2 до 16 систем счисления");
+				}
+
+				if (charBase.IndexOf(c) > startSystem - 1)
+				{
+					throw new ArgumentException($"Система счисления: \"{startSystem}\" не содержит \"{c}\"");
+				}
+
+				numberToReturn += charBase.IndexOf(c) * (int)Math.Pow(startSystem, i);
+				i--;
+			}
+
+			return numberToReturn;
+		}
+
+		internal static string FillZeroes(string num)
+		{
+			bool negative = num[0] == '-';
+			bool skipFirst = num[0] == '+' || num[0] == '-';
+
+			int closest = (int)RoundUpToPowerOf2((uint)(num.Length - (skipFirst ? 1 : 0)));
+			if (closest < 4)
+			{
+				closest = 4;
+			}
+
+			int diff = closest - (num.Length - (skipFirst ? 1 : 0));
+			string add = (negative ? "1" : "0") + new string('0', diff - 1);
+
+			return add + (skipFirst ? num.Substring(1) : num);
 		}
 	}
 }

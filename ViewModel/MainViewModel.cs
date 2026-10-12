@@ -1,4 +1,5 @@
-﻿using NumberConverter.MVVM;
+﻿using NumberConverter.Model;
+using NumberConverter.MVVM;
 using System;
 using System.Linq;
 using System.Windows;
@@ -24,6 +25,8 @@ namespace NumberConverter.ViewModel
 			SourceSystemValue = 2;
 			FiniteSystemValue = 2;
 			PKVisibility = Visibility.Hidden;
+			string[] result = Calculator.Calculate("9", "14", 10, Operations.Addition);
+			MessageBox.Show(result[0] + "\n" + result[1]);
 		}
 
 		public Visibility PKVisibility
@@ -73,7 +76,7 @@ namespace NumberConverter.ViewModel
 
 			try
 			{
-				string result = NumberConverter.Converter.Calculate(startNumber, (int)startSystem, (int)endSystem);
+				string result = NumberConverter.Converter.CalculateForTextBlocks(startNumber, (int)startSystem, (int)endSystem);
 				if (result.Contains("ПК"))
 				{
 					int sepIndex = result.IndexOf("ПК");
