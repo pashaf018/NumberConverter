@@ -25,8 +25,6 @@ namespace NumberConverter.ViewModel
 			SourceSystemValue = 2;
 			FiniteSystemValue = 2;
 			PKVisibility = Visibility.Hidden;
-			string[] result = Calculator.Calculate("9", "14", 10, Operations.Addition);
-			MessageBox.Show(result[0] + "\n" + result[1]);
 		}
 
 		public Visibility PKVisibility
